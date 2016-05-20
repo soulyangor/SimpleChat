@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Chat</title>
+        <link rel="stylesheet" type="text/css" media="screen, projection"
+              th:href="@{/css/lib/bootstrap.min.css}"/>
+        <script th:src="@{/js/lib/angular.min.1.4.9.js}"></script>
+        <script th:src="@{/js/lib/sockjs-0.3.4.js}"></script>
+        <script th:src="@{/js/lib/stomp.js}"></script>
+        <script th:src="@{/js/app.js}"></script>
+    </head>
+    <body ng-app="myApp">
+        <div class="container" ng-controller="ChatController as ctrl">
+            <div class="row " style="padding-top:40px;">
+                <h3 class="text-center" >Добро пожаловать в говорильню </h3>
+                <br /><br />
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            Последние сообщения
+                        </div>
+                        <div class="panel-body"> 
+                            <div class = "row">
+                                <button class="btn" ng-click="ctrl.exit()" style="float: right; margin-right:15px;">Выход</button>
+                                <span class="text-info" style="float: right; margin-right:10px;">{{ctrl.user.name}}, для выхода нажите эту кнопку:</span>
+                            </div>
+                            <ul class="media-list">
+                                <li class="media" ng-repeat="m in ctrl.messages| orderBy:ctrl.orderProp:sortReverse| startFrom:ctrl.currentPage * ctrl.pageSize | limitTo:ctrl.pageSize">
+
+                                    <div class="media-body {{m.id === null ?'alert-info':''}}">
+                                        <div class="media-heading" ng-show="m.id === null">
+                                            <span class="alert-danger">Сообщение удалено</span>                                        
+                                        </div>
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <span class = "text-left text-info">{{m.user.name}}:</span>                                                
+                                            </div>
+                                            <div class="media-body">
+                                                <div>{{m.content}}</div>                                                
+                                                <small class="text-muted">{{ctrl.dateFormat(m.date)}}</small>
+                                                <hr />
+                                            </div>
+                                            <div class = "media-right">
+                                                <button ng-click="ctrl.deleteMessage(m)"
+                                                        ng-show="ctrl.showButton(m)"
+                                                        ng-disabled="m.id === null"
+                                                        class="btn {{m.id !== null ?'btn-danger':'btn-info'}}">                                                                                                            
+                                                    Удалить
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                    </div>                                    
+
+                                </li>                                
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <div class="form-group col-md-12">
+                                <button type="button" ng-click="ctrl.prevPage(5)" ng-show="ctrl.pagePanel.prevN" 
+                                        class="btn btn-primary">&lt;&lt;</button> 
+                                <button type="button" ng-click="ctrl.firstPage()" ng-show="ctrl.pagePanel.first"
+                                        class="btn btn-primary">1</button>
+                                <label ng-show="ctrl.pagePanel.prevLabel">...</label>
+                                <button type="button" ng-click="ctrl.prevPage(1)" ng-show="ctrl.pagePanel.prev" 
+                                        class="btn btn-primary">{{ctrl.currentPage}}</button> 
+                                <button type="button" class="btn btn-danger">{{ctrl.currentPage + 1}}</button>
+                                <button type="button" ng-click="ctrl.nextPage(1)" ng-show="ctrl.pagePanel.next" 
+                                        class="btn btn-primary">{{ctrl.currentPage + 2}}</button> 
+                                <label ng-show="ctrl.pagePanel.nextLabel">...</label>
+                                <button type="button" ng-click="ctrl.lastPage()" ng-show="ctrl.pagePanel.last"
+                                        class="btn btn-primary">{{ctrl.numberOfPages()}}</button>
+                                <button type="button" ng-click="ctrl.nextPage(5)" ng-show="ctrl.pagePanel.nextN" 
+                                        class="btn btn-primary">&gt;&gt;</button> 
+                            </div>
+                            <div class="input-group">
+                                <input ng-model="ctrl.message.content" type="text" class="form-control" placeholder="Введите сообщение" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-info" type="button" ng-click="ctrl.sendMessage();">Отправить</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+            </div>
+        </div>
+        <script th:src="@{/js/chat/controller.js}"></script>
+        <script th:src="@{/js/chat/service.js}"></script>
+        <script th:src="@{/js/login/service.js}"></script>
+    </body>
+</html>

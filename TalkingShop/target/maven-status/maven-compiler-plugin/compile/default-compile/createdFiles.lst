@@ -1,0 +1,10 @@
+com\mycompany\talkingshop\controllers\MessageRestController.class
+com\mycompany\talkingshop\controllers\UserRestController.class
+com\mycompany\talkingshop\services\ChatServiceImpl.class
+com\mycompany\talkingshop\app\Application.class
+com\mycompany\talkingshop\model\User.class
+com\mycompany\talkingshop\model\Message.class
+com\mycompany\talkingshop\services\ChatService.class
+com\mycompany\talkingshop\controllers\MessageController.class
+com\mycompany\talkingshop\controllers\PageController.class
+com\mycompany\talkingshop\config\WebSocketConfig.class
